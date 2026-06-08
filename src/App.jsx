@@ -3,23 +3,23 @@ import { useState } from 'react';
 import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
-function prepareList(list, filterValue) {
-  return [...list].filter(item => {
+function prepareList(list, str) {
+  return list.filter(item => {
     const titleHas = item.title
       .toLowerCase()
-      .includes(filterValue.toLowerCase());
+      .includes(str.trim().toLowerCase());
 
     const descriptionHas = item.description
       .toLowerCase()
-      .includes(filterValue.toLowerCase());
+      .includes(str.trim().toLowerCase());
 
     return titleHas || descriptionHas;
   });
 }
 
 export const App = () => {
-  const [filter, setFilter] = useState('');
-  const visibleMovies = prepareList(moviesFromServer, filter);
+  const [query, setQuery] = useState('');
+  const visibleMovies = prepareList(moviesFromServer, query);
 
   return (
     <div className="page">
@@ -37,8 +37,8 @@ export const App = () => {
                 id="search-query"
                 className="input"
                 placeholder="Type search word"
-                onChange={e => {
-                  setFilter(e.target.value.trim());
+                onChange={changeEvent => {
+                  setQuery(changeEvent.target.value);
                 }}
               />
             </div>
